@@ -1,0 +1,161 @@
+/* styles.css - basic layout, form and button styles for the feedback app */
+:root{
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --primary-600: #1e40af;
+  --success: #16a34a;
+  --danger: #dc2626;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: linear-gradient(180deg, var(--bg), #eef2ff);
+  color:#111827;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Centered page container */
+main, .page {
+  max-width:900px;
+  margin:2.25rem auto;
+  padding:1.25rem;
+}
+
+nav{
+  margin-bottom:1rem;
+  font-size:0.95rem;
+}
+nav a{ color:var(--primary); text-decoration:none }
+nav a:hover{ text-decoration:underline }
+
+h1{ font-size:1.75rem; margin:0 0 0.75rem 0 }
+
+form{
+  background:var(--card);
+  border-radius:10px;
+  padding:1rem 1.25rem;
+  box-shadow:0 6px 18px rgba(12,16,30,0.06);
+}
+
+label{ display:block; margin-top:0.75rem; font-size:0.95rem }
+input, textarea, select{
+  width:100%;
+  padding:0.6rem 0.75rem;
+  margin-top:0.35rem;
+  border:1px solid #e6e9ef;
+  border-radius:8px;
+  font-size:0.95rem;
+  background:transparent;
+}
+
+textarea{ resize:vertical }
+
+.btn{ display:inline-block; border:0; cursor:pointer; border-radius:8px; font-weight:600 }
+.btn-primary{
+  background:var(--primary);
+  color:white;
+  padding:0.65rem 1rem;
+  box-shadow:0 6px 12px rgba(37,99,235,0.12);
+}
+.btn-primary:hover{ background:var(--primary-600) }
+
+.message{ margin-top:1rem; font-size:0.95rem }
+.message.success{ color:var(--success) }
+.message.error{ color:var(--danger) }
+
+/* cards and meta for all.html */
+.card{
+  border:1px solid #e6e9ef;
+  padding:0.85rem 1rem;
+  margin-bottom:0.85rem;
+  border-radius:8px;
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+}
+.meta{ color:var(--muted); font-size:0.9rem; margin-top:0.35rem }
+
+.muted{ color:var(--muted) }
+.error{ color:var(--danger) }
+
+/* disabled button state */
+button[disabled]{ opacity:0.6; cursor:not-allowed }
+
+/* small loading text */
+.loading{ font-style:italic; color:var(--muted) }
+
+/* UX polish (CSS-only): transitions, spinner, message animation */
+button.btn{
+  transition: transform 120ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+button.btn:focus{
+  outline: none;
+  box-shadow: 0 6px 18px rgba(37,99,235,0.12), 0 0 0 4px rgba(37,99,235,0.06);
+  transform: translateY(-1px);
+}
+
+.btn-primary{
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 120ms ease;
+}
+.btn-primary:active{ transform: translateY(0); }
+
+/* spinner shown for disabled buttons (CSS-only loader) */
+button[disabled].btn-primary::after{
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.6rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.65);
+  border-top-color: rgba(255,255,255,0.95);
+  box-sizing: border-box;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+/* Smooth input interactions */
+input, textarea, select{
+  transition: border-color 140ms ease, box-shadow 200ms ease, background-color 160ms ease;
+}
+
+.card{
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms cubic-bezier(.2,.9,.2,1);
+}
+.card:hover{ transform: translateY(-4px); box-shadow: 0 12px 30px rgba(12,16,30,0.08); }
+
+/* Message fade in */
+.message{ opacity:0; transform: translateY(6px); transition: opacity 240ms ease, transform 240ms ease; }
+.message.success, .message.error{ opacity:1; transform: translateY(0); }
+
+/* Make nav a bit more prominent */
+nav{ display:flex; gap:0.75rem; align-items:center }
+nav a{ padding:0.25rem 0.5rem; border-radius:6px }
+nav a:hover{ background: rgba(37,99,235,0.06) }
+
+/* Responsive tweaks: compact form on small screens */
+@media (max-width:420px){
+  .btn-primary{ width:100%; text-align:center }
+}
+
+/* small screens */
+@media (max-width:520px){
+  main, .page{ padding:0.75rem }
+  h1{ font-size:1.4rem }
+}
+
+/* subtle form focus states */
+input:focus, textarea:focus, select:focus{
+  outline: none;
+  border-color: rgba(37,99,235,0.9);
+  box-shadow: 0 4px 14px rgba(37,99,235,0.08);
+}

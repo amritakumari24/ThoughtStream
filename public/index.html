@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ThoughtStream — Submit Feedback</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <nav>
+    <a href="/">Submit Feedback</a> | <a href="/all.html">All Feedback</a>
+  </nav>
+
+  <h1>Submit Feedback</h1>
+
+  <form id="feedbackForm">
+    <label>
+      Name
+      <input type="text" id="name" required />
+    </label>
+
+    <label>
+      Rating
+      <select id="rating" required>
+        <option value="">Select rating</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </label>
+
+    <label>
+      Comment (optional)
+      <textarea id="comment" rows="5"></textarea>
+    </label>
+
+    <button type="submit" id="submitBtn" class="btn btn-primary">Send Feedback</button>
+
+    <div class="message" id="message" aria-live="polite"></div>
+  </form>
+
+  <script src="/js/form.js"></script>
+</body>
+</html>
