@@ -11,10 +11,17 @@ async function load() {
     }
 
     list.innerHTML = items.map(i => `
-      <div class="card">
-        <div><strong>${escapeHtml(i.name)}</strong> — Rating: ${i.rating}</div>
-        <div class="meta">${new Date(i.createdAt).toLocaleString()}</div>
-        <div>${i.comment ? escapeHtml(i.comment) : ''}</div>
+      <div class="card" data-id="${i._id}">
+        <div class="card-row">
+          <div>
+            <div><strong>${escapeHtml(i.name)}</strong> — Rating: ${i.rating}</div>
+            <div class="meta">${new Date(i.createdAt).toLocaleString()}</div>
+            <div>${i.comment ? escapeHtml(i.comment) : ''}</div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-danger" data-id="${i._id}" title="Delete feedback">Delete</button>
+          </div>
+        </div>
       </div>
     `).join('');
   } catch (err) {
@@ -28,3 +35,69 @@ function escapeHtml(str) {
 }
 
 load();
+
+// Confirmation modal and delete flow
+const modal = document.getElementById('confirmModal');
+const toast = document.getElementById('toast');
+let pendingId = null;
+
+document.getElementById('list').addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn-danger');
+  if (!btn) return;
+  pendingId = btn.dataset.id;
+  openModal();
+});
+
+function openModal(){
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.getElementById('confirmYes').focus();
+}
+
+function closeModal(){
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  pendingId = null;
+}
+
+document.getElementById('confirmNo').addEventListener('click', () => {
+  closeModal();
+});
+
+document.getElementById('confirmYes').addEventListener('click', async (e) => {
+  if (!pendingId) return;
+  const btn = e.currentTarget;
+  btn.disabled = true;
+  btn.textContent = 'Deleting...';
+
+  try {
+    const res = await fetch('/api/feedback/' + encodeURIComponent(pendingId), { method: 'DELETE' });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      showToast('Error deleting: ' + (err.error || 'Unknown'), true);
+      return;
+    }
+
+    // remove from DOM
+    const el = document.querySelector(`.card[data-id="${pendingId}"]`);
+    if (el) el.remove();
+    showToast('Feedback deleted');
+  } catch (err) {
+    showToast('Network error while deleting', true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Delete';
+    closeModal();
+  }
+});
+
+function showToast(msg, isError){
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '');
+  toast.setAttribute('aria-hidden','false');
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+    toast.setAttribute('aria-hidden','true');
+  }, 3000);
+}

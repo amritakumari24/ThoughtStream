@@ -7,13 +7,18 @@
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  <nav>
-    <a href="/">Submit Feedback</a> | <a href="/all.html">All Feedback</a>
-  </nav>
+  <div class="page">
+    <header class="site-header" role="banner">
+      <div class="brand">ThoughtStream</div>
+    </header>
 
-  <h1>Submit Feedback</h1>
+    <nav>
+      <a href="/">Submit Feedback</a> | <a href="/all.html">All Feedback</a>
+    </nav>
 
-  <form id="feedbackForm">
+    <h1>Submit Feedback</h1>
+
+    <form id="feedbackForm">
     <label>
       Name
       <input type="text" id="name" required />
@@ -41,6 +46,7 @@
     <div class="message" id="message" aria-live="polite"></div>
   </form>
 
-  <script src="/js/form.js"></script>
+    <script src="/js/form.js"></script>
+  </div>
 </body>
 </html>

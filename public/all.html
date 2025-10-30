@@ -7,12 +7,34 @@
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  <nav>
-    <a href="/">Submit Feedback</a> | <a href="/all.html">All Feedback</a>
-  </nav>
+  <div class="page">
+    <header class="site-header" role="banner">
+      <div class="brand">ThoughtStream</div>
+    </header>
 
-  <h1>All Feedback</h1>
-  <div id="list" aria-live="polite">Loading feedback...</div>
+    <nav>
+      <a href="/">Submit Feedback</a> | <a href="/all.html">All Feedback</a>
+    </nav>
+
+    <h1>All Feedback</h1>
+    <div id="list" aria-live="polite">Loading feedback...</div>
+
+    <!-- Toast for temporary messages -->
+    <div id="toast" class="toast" aria-hidden="true"></div>
+
+    <!-- Confirmation modal (hidden by default) -->
+    <div id="confirmModal" class="modal" aria-hidden="true">
+      <div class="modal-backdrop"></div>
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <h2 id="modalTitle">Delete feedback?</h2>
+        <p class="modal-message">Are you sure you want to permanently delete this feedback? This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button id="confirmNo" class="btn">Cancel</button>
+          <button id="confirmYes" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="/js/all.js"></script>
 </body>

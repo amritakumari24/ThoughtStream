@@ -55,10 +55,28 @@ app.get('/api/feedback', async (req, res) => {
   }
 });
 
-// Fallback to index
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// Delete feedback
+app.delete('/api/feedback/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+
+    const doc = await Feedback.findByIdAndDelete(id);
+    if (!doc) return res.status(404).json({ error: 'Feedback not found' });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
+
+// // Fallback to index
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
