@@ -1,3 +1,5 @@
+const API_BASE_URL = "https://thought-stream-y75l.vercel.app/api"; // backend URL
+
 document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const submitBtn = document.getElementById('submitBtn');
@@ -26,7 +28,7 @@ document.getElementById('feedbackForm').addEventListener('submit', async (e) => 
   submitBtn.textContent = 'Sending...';
 
   try {
-    const res = await fetch('/api/feedback', {
+    const res = await fetch(`${API_BASE_URL}/feedback`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, rating, comment })

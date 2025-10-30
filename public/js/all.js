@@ -1,8 +1,10 @@
+const API_BASE_URL = "https://thought-stream-y75l.vercel.app/api"; // your backend URL
+
 async function load() {
   const list = document.getElementById('list');
   list.innerHTML = '<p class="muted">Loading feedback...</p>';
   try {
-    const res = await fetch('/api/feedback');
+    const res = await fetch(`${API_BASE_URL}/feedback`);
     if (!res.ok) throw new Error('Failed to fetch');
     const items = await res.json();
     if (!items.length) {
@@ -31,7 +33,9 @@ async function load() {
 
 function escapeHtml(str) {
   if (!str) return '';
-  return str.replace(/[&<>\"']/g, function(m) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'})[m]; });
+  return str.replace(/[&<>\"']/g, function(m) { 
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'})[m]; 
+  });
 }
 
 load();
@@ -71,14 +75,13 @@ document.getElementById('confirmYes').addEventListener('click', async (e) => {
   btn.textContent = 'Deleting...';
 
   try {
-    const res = await fetch('/api/feedback/' + encodeURIComponent(pendingId), { method: 'DELETE' });
+    const res = await fetch(`${API_BASE_URL}/feedback/${encodeURIComponent(pendingId)}`, { method: 'DELETE' });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       showToast('Error deleting: ' + (err.error || 'Unknown'), true);
       return;
     }
 
-    // remove from DOM
     const el = document.querySelector(`.card[data-id="${pendingId}"]`);
     if (el) el.remove();
     showToast('Feedback deleted');
